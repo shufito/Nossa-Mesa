@@ -1,115 +1,324 @@
 import { Button } from "@/components/ui/button";
 import { createFileRoute } from "@tanstack/react-router";
-import { ClipboardList, DollarSign, Users } from "lucide-react";
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  Origami,
+  SquareSlashIcon,
+} from "lucide-react";
+import { AlignJustify } from "lucide-react";
+
 import PizzaSharingBro from "@/assets/PizzaSharingBro.svg";
-import EthnicFriendshipCuate from "@/assets/EthnicFriendshipCuate.svg";
-import QRCodeAmico from "@/assets/QRCodeAmico.svg";
+import PizzaSharingPana from "@/assets/PizzaSharingPana.svg";
 import OrderFoodAmico from "@/assets/OrderFoodAmico.svg";
+import QRCodeAmico from "@/assets/QRCodeAmico.svg";
+import EthnicFriendshipCuate from "@/assets/EthnicFriendshipCuate.svg";
+import PizzaSharingCuate from "@/assets/PizzaSharingCuate.svg";
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const navigation = [
+  { name: "Product", href: "#" },
+  { name: "Features", href: "#" },
+  { name: "Preços", href: "#precos" },
+];
+
 function Index() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen scroll-smooth">
       {/* Hero Section */}
-      <section className="text-center py-20 px-4 bg-muted bg-[url(src/assets/light-patten.svg)]">
-        <h1 className="text-4xl font-bold mb-4">
-          Divida suas contas com facilidade
-        </h1>
-        <p className="text-lg mb-6 max-w-xl mx-auto">
-          Nosso app ajuda você a registrar pedidos e calcular quanto cada pessoa
-          deve pagar, de forma simples e rápida.
-        </p>
-        <Button className="text-lg px-6 py-3">Começar agora</Button>
+      <section className="text-center px-4 bg-muted bg-[url(src/assets/light-patten.svg)]">
+        <header className="absolute inset-x-0 top-0 z-50">
+          <nav
+            aria-label="Global"
+            className="flex items-center justify-between p-6 lg:px-8"
+          >
+            <div className="flex lg:flex-1">
+              <a href="#" className="-m-1.5 p-1.5">
+                <span className="sr-only">Your Company</span>
+                <SquareSlashIcon className="h-8 text-primary" />
+              </a>
+            </div>
+            <div className="flex lg:hidden">
+              <button
+                type="button"
+                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              >
+                <span className="sr-only">Open main menu</span>
+                <AlignJustify aria-hidden="true" className="size-6" />
+              </button>
+            </div>
+            <div className="hidden lg:flex lg:gap-x-12">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm/6 font-semibold text-gray-900"
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-2">
+              <Button variant={"default"} size={"sm"}>
+                Logon
+              </Button>
+              <Button variant={"outline"} size={"sm"}>
+                Login
+              </Button>
+            </div>
+          </nav>
+        </header>
+        <div className="mx-auto max-w-2xl py-40">
+          <h1 className="text-4xl font-semibold tracking-tight text-balance text-accent-foreground sm:text-7xl">
+            Divida suas contas com facilidade
+          </h1>
+          <p className="mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8">
+            Nosso app ajuda você a registrar pedidos e calcular quanto cada
+            pessoa deve pagar, de forma simples e rápida.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <Button type="button" className="cursor-pointer">
+              Experimente grátis
+            </Button>
+            <Button variant={"outline"}>
+              Saiba mais <ArrowDownIcon />
+            </Button>
+          </div>
+        </div>
       </section>
 
       <div className="">
         {/* Seção 1 */}
-        <section className="py-16 px-4 grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
+        <section className="py-24 sm:py-32 sm:px-6 lg:px-8 grid gap-12 md:grid-cols-2 max-w-7xl mx-auto items-center">
+          <div>
+            <h2 className="text-3xl font-semibold mb-4">Divisão inteligente</h2>
+            <p className="text-muted-foreground tracking-normal mb-6">
+              <strong>Sem mais confusão na hora de pagar a conta.</strong> Com
+              nosso app, você divide facilmente qualquer item entre duas, três
+              ou dez pessoas — <strong>com cálculo automático</strong>, justo e
+              sem dor de cabeça.
+            </p>
+            <dl className="space-y-6 text-base/7 text-gray-600">
+              <div className="relative pl-9">
+                <dt className="font-semibold text-gray-900">
+                  <Origami
+                    aria-hidden="true"
+                    className="absolute top-1 left-1 size-5 text-primary"
+                  />
+                  Divisão flexível
+                </dt>
+                <dd className="mt-1">
+                  Escolha entre dividir igualmente ou proporcionalmente, item
+                  por item.
+                </dd>
+              </div>
+
+              <div className="relative pl-9">
+                <dt className="font-semibold text-gray-900">
+                  <Origami
+                    aria-hidden="true"
+                    className="absolute top-1 left-1 size-5 text-primary"
+                  />
+                  Atualização em tempo real
+                </dt>
+                <dd className="mt-1">
+                  Veja os valores se ajustarem automaticamente conforme os
+                  pedidos são adicionados.
+                </dd>
+              </div>
+
+              <div className="relative pl-9">
+                <dt className="font-semibold text-gray-900">
+                  <Origami
+                    aria-hidden="true"
+                    className="absolute top-1 left-1 size-5 text-primary"
+                  />
+                  Sem discussões
+                </dt>
+                <dd className="mt-1">
+                  Todos visualizam o que devem pagar. Clareza total, sem margem
+                  para dúvidas.
+                </dd>
+              </div>
+            </dl>
+          </div>
           <div>
             <img src={PizzaSharingBro} alt="Dividindo conta" />
           </div>
-          <div className="flex items-start gap-4">
-            <DollarSign className="w-12 h-12 text-green-600" />
-            <div>
-              <h2 className="text-2xl font-semibold mb-2">
-                Divisão inteligente
+        </section>
+
+        <section className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="bg-[url(src/assets/light-patten.svg)] relative isolate overflow-hidden bg-muted px-6 py-16 shadow-2xl sm:rounded-3xl sm:px-16 lg:flex lg:gap-x-20 lg:px-24 lg:py-0">
+            <svg
+              viewBox="0 0 1024 1024"
+              aria-hidden="true"
+              className="animate-pulse absolute top-1/2 left-1/2 -z-10 size-256 -translate-y-1/2 mask-[radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0"
+            >
+              <circle
+                r={512}
+                cx={512}
+                cy={512}
+                fill="url(#759c1415-0410-454c-8f7c-9a820de03641)"
+                fillOpacity="0.7"
+              />
+              <defs>
+                <radialGradient id="759c1415-0410-454c-8f7c-9a820de03641">
+                  <stop stopColor="#22c55e" />
+                  <stop offset={1} stopColor="#00c951" />
+                </radialGradient>
+              </defs>
+            </svg>
+            <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
+              <h2 className="text-3xl font-semibold tracking-tight text-balance text-accent-foreground sm:text-4xl">
+                Ideal para grupos
               </h2>
-              <p>
-                Itens podem ser divididos entre múltiplas pessoas com cálculo
-                automático de quanto cada um paga.
+              <p className="mt-6 text-base/8 text-pretty text-muted-foreground">
+                <strong>Happy hour, rodízio, viagem ou vaquinha?</strong> Não
+                importa a ocasião — o app é perfeito para{" "}
+                <strong>organizar os gastos em grupo</strong> de forma prática e
+                intuitiva.
               </p>
+              <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
+                <Button variant={"default"}>Começar agora</Button>
+                <Button variant={"ghost"}>
+                  Saiba mais <ArrowRightIcon />
+                </Button>
+              </div>
+            </div>
+            <div className="hidden lg:block relative h-80 mt-0 -z-10">
+              <img
+                alt="App screenshot"
+                src={PizzaSharingPana}
+                width={1824}
+                height={1080}
+                className="absolute top-0 -left-55 w-228 max-w-none"
+              />
             </div>
           </div>
         </section>
-
-        {/* Seção 2 (imagem do outro lado) */}
-        <div className="bg-muted">
-          <section className="py-16 px-4 grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center bg-muted">
-            <div className="md:order-2">
-              <img src={EthnicFriendshipCuate} alt="Grupo de pessoas" />
-            </div>
-            <div className="flex items-start gap-4 md:order-1">
-              <Users className="w-12 h-12 text-blue-600" />
-              <div>
-                <h2 className="text-2xl font-semibold mb-2">
-                  Ideal para grupos
-                </h2>
-                <p>
-                  Perfeito para dividir a conta entre amigos, colegas de
-                  trabalho, ou familiares em qualquer ocasião.
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
 
         {/* Seção 3 */}
-        <section className="py-16 px-4 grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
-          <div>
-            <img src={OrderFoodAmico} alt="Resumo da divisão" />
-          </div>
-          <div className="flex items-start gap-4">
-            <ClipboardList className="w-12 h-12 text-yellow-600" />
-            <div>
-              <h2 className="text-2xl font-semibold mb-2">Resumo detalhado</h2>
-              <p>
-                Veja exatamente quanto cada pessoa deve pagar de forma clara e
-                organizada. Sem confusão.
-              </p>
+        <section className="py-24 sm:py-32">
+          <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+            <h2 className="text-center text-base font-semibold text-primary">
+              Solução na sua mão
+            </h2>
+            <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-accent-accent-foreground sm:text-5xl">
+              Dividir a conta nunca foi tão fácil
+            </p>
+            <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
+              <div className="relative lg:row-span-2">
+                <div className="absolute inset-px rounded-lg lg:rounded-l-4xl"></div>
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
+                  <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
+                    <p className="mt-2 text-lg font-medium tracking-tight text-accent-foreground max-lg:text-center">
+                      Divisão por item
+                    </p>
+                    <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
+                      Atribua quem consumiu o quê com poucos cliques. Cada item
+                      pode ser dividido entre várias pessoas.
+                    </p>
+                  </div>
+                  <div className="relative min-h-120 w-full grow">
+                    <div className="absolute top-10 right-0 bottom-0 left-0 overflow-hidden">
+                      <img
+                        className="w-full max-lg:max-w-xs"
+                        src={OrderFoodAmico}
+                        alt="Uso em grupo"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 lg:rounded-l-4xl"></div>
+              </div>
+
+              <div className="relative max-lg:row-start-1">
+                <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-t-4xl"></div>
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
+                  <div className="px-8 pt-8 sm:px-10 sm:pt-10">
+                    <p className="mt-2 text-lg font-medium tracking-tight text-accent-foreground max-lg:text-center">
+                      Visão geral clara
+                    </p>
+                    <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
+                      Um resumo transparente de quanto cada pessoa deve pagar —
+                      sem dúvidas ou surpresas.
+                    </p>
+                  </div>
+                  <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
+                    <img
+                      className="w-full max-lg:max-w-xs"
+                      src={EthnicFriendshipCuate}
+                      alt="Resumo detalhado"
+                    />
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 max-lg:rounded-t-4xl"></div>
+              </div>
+
+              <div className="relative max-lg:row-start-3 lg:col-start-2 lg:row-start-2">
+                <div className="absolute inset-px rounded-lg bg-white"></div>
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
+                  <div className="px-8 pt-8 sm:px-10 sm:pt-10">
+                    <p className="mt-2 text-lg font-medium tracking-tight text-accent-foreground max-lg:text-center">
+                      Sem contas erradas
+                    </p>
+                    <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
+                      O sistema calcula tudo por você, com total precisão. Nada
+                      de sobras ou valores quebrados.
+                    </p>
+                  </div>
+                  <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
+                    <img
+                      className="w-full max-lg:max-w-xs"
+                      src={PizzaSharingCuate}
+                      alt="Cálculo automático"
+                    />
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5"></div>
+              </div>
+
+              <div className="relative lg:row-span-2">
+                <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-4xl lg:rounded-r-4xl"></div>
+                <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
+                  <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
+                    <p className="mt-2 text-lg font-medium tracking-tight text-accent-foreground max-lg:text-center">
+                      Pronto para qualquer ocasião
+                    </p>
+                    <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
+                      Seja no bar, pizzaria, viagem ou delivery. Nosso app
+                      facilita a divisão para qualquer tipo de encontro.
+                    </p>
+                  </div>
+                  <div className="relative min-h-120 w-full grow">
+                    <div className="absolute top-10 right-0 bottom-0 left-0 overflow-hidden">
+                      <img
+                        className="w-full max-lg:max-w-xs"
+                        src={QRCodeAmico}
+                        alt="Uso em grupo"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 max-lg:rounded-b-4xl lg:rounded-r-4xl"></div>
+              </div>
             </div>
           </div>
         </section>
-
-        {/* Seção 4 (imagem do outro lado) */}
-        <div className="bg-muted">
-          <section className="py-16 px-4 grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center bg-muted">
-            <div className="md:order-2">
-              <img src={QRCodeAmico} alt="Grupo de pessoas" />
-            </div>
-            <div className="flex items-start gap-4 md:order-1">
-              <Users className="w-12 h-12 text-blue-600" />
-              <div>
-                <h2 className="text-2xl font-semibold mb-2">
-                  Ideal para grupos
-                </h2>
-                <p>
-                  Perfeito para dividir a conta entre amigos, colegas de
-                  trabalho, ou familiares em qualquer ocasião.
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
       </div>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 text-center bg-[url(src/assets/light-patten.svg)]">
-        <h2 className="text-3xl font-bold mb-8">Planos</h2>
+      <section
+        id={"precos"}
+        className="py-16 px-4 text-center bg-muted bg-[url(src/assets/light-patten.svg)]"
+      >
+        <h2 className="text-4xl font-bold mb-8">Planos</h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="bg-white shadow rounded p-6">
-            <h3 className="text-xl font-semibold mb-2">Gratuito</h3>
+            <h3 className="text-2xl font-semibold mb-2">Gratuito</h3>
             <p className="mb-4">Ideal para encontros casuais</p>
             <ul className="text-left mb-6 space-y-2">
               <li>- Até 5 pessoas por divisão</li>
@@ -120,7 +329,7 @@ function Index() {
           </div>
 
           <div className="bg-white shadow rounded p-6 border-2 border-blue-600">
-            <h3 className="text-xl font-semibold mb-2">Pro - R$9,90/mês</h3>
+            <h3 className="text-2xl font-semibold mb-2">Pro - R$9,90/mês</h3>
             <p className="mb-4">Perfeito para grupos e eventos frequentes</p>
             <ul className="text-left mb-6 space-y-2">
               <li>- Pessoas ilimitadas</li>
