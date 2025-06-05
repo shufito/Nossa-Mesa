@@ -11,13 +11,48 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthSignupImport } from './routes/auth/signup'
+import { Route as AuthSigninImport } from './routes/auth/signin'
+import { Route as AppHomeImport } from './routes/app/home'
+import { Route as AppMesaMesaIdImport } from './routes/app/mesa/$mesaId'
 
 // Create/Update Routes
+
+const AuthRouteRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthSigninRoute = AuthSigninImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AppHomeRoute = AppHomeImport.update({
+  id: '/app/home',
+  path: '/app/home',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AppMesaMesaIdRoute = AppMesaMesaIdImport.update({
+  id: '/app/mesa/$mesaId',
+  path: '/app/mesa/$mesaId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,39 +67,128 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/app/home': {
+      id: '/app/home'
+      path: '/app/home'
+      fullPath: '/app/home'
+      preLoaderRoute: typeof AppHomeImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/signin': {
+      id: '/auth/signin'
+      path: '/signin'
+      fullPath: '/auth/signin'
+      preLoaderRoute: typeof AuthSigninImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/app/mesa/$mesaId': {
+      id: '/app/mesa/$mesaId'
+      path: '/app/mesa/$mesaId'
+      fullPath: '/app/mesa/$mesaId'
+      preLoaderRoute: typeof AppMesaMesaIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteRouteChildren {
+  AuthSigninRoute: typeof AuthSigninRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/app/mesa/$mesaId': typeof AppMesaMesaIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/app/mesa/$mesaId': typeof AppMesaMesaIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/auth/signin': typeof AuthSigninRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/app/mesa/$mesaId': typeof AppMesaMesaIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/app/home'
+    | '/auth/signin'
+    | '/auth/signup'
+    | '/app/mesa/$mesaId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/home'
+    | '/auth/signin'
+    | '/auth/signup'
+    | '/app/mesa/$mesaId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/app/home'
+    | '/auth/signin'
+    | '/auth/signup'
+    | '/app/mesa/$mesaId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  AppHomeRoute: typeof AppHomeRoute
+  AppMesaMesaIdRoute: typeof AppMesaMesaIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  AppHomeRoute: AppHomeRoute,
+  AppMesaMesaIdRoute: AppMesaMesaIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +201,35 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/auth",
+        "/app/home",
+        "/app/mesa/$mesaId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/auth": {
+      "filePath": "auth/route.tsx",
+      "children": [
+        "/auth/signin",
+        "/auth/signup"
+      ]
+    },
+    "/app/home": {
+      "filePath": "app/home.tsx"
+    },
+    "/auth/signin": {
+      "filePath": "auth/signin.tsx",
+      "parent": "/auth"
+    },
+    "/auth/signup": {
+      "filePath": "auth/signup.tsx",
+      "parent": "/auth"
+    },
+    "/app/mesa/$mesaId": {
+      "filePath": "app/mesa/$mesaId.tsx"
     }
   }
 }
