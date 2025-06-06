@@ -1,6 +1,8 @@
-// db.ts (simulando "banco de dados")
-import type { Mesa, Pessoa, Item } from "@/type.ts";
+// atoms/db.ts
+import { atomWithStorage } from "jotai/utils";
+import type { Mesa, Pessoa, Item } from "@/type";
 
-export const mesas: Mesa[] = [];
-export const pessoas: Pessoa[] = [];
-export const itens: Item[] = [];
+// átomos reativos
+export const mesasAtom = atomWithStorage<Mesa[]>("mesas", []);
+export const pessoasAtom = atomWithStorage<Pessoa[]>("pessoas", []);
+export const itensAtom = atomWithStorage<Item[]>("itens", []);

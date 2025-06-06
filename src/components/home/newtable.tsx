@@ -24,10 +24,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useNavigate } from "@tanstack/react-router";
-import { mesas } from "@/db";
-import type { Mesa } from "@/type";
-
 import { v4 as uuid } from "uuid";
+import { useAtom } from "jotai";
+import { mesasAtom } from "@/db";
+import type { Mesa } from "@/type";
 
 const formSchema = z.object({
   descricao: z.string().min(5, {
@@ -37,6 +37,7 @@ const formSchema = z.object({
 
 export function NewTable() {
   const navigate = useNavigate();
+  const [, setMesas] = useAtom(mesasAtom);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +53,7 @@ export function NewTable() {
       data: new Date(),
       status: "aberta",
     };
-    mesas.push(novaMesa);
+    setMesas((prev) => [...prev, novaMesa]);
     navigate({ to: `/app/mesa/${novaMesa.id}` });
   }
 

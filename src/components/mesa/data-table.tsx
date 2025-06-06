@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { NewTable } from "@/components/home/newtable";
+import { FormItens } from "./formItens";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center gap-2">
           <Input
-            placeholder="Sua mesa..."
+            placeholder="Pesquise seu item..."
             value={
               (table.getColumn("descricao")?.getFilterValue() as string) ?? ""
             }
@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
         <div className="flex items-center gap-2">
-          <NewTable />
+          <FormItens />
         </div>
       </div>
       <div className="rounded-md border">

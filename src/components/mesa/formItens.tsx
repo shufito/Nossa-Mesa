@@ -24,11 +24,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { formatCurrency } from "@/lib/utils";
-import type { Mesa } from "@/type";
-import { itens, pessoas } from "@/db";
-import { useState } from "react";
+import { itensAtom, pessoasAtom } from "@/db";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 
 import { v4 as uuid } from "uuid";
+import { useParams } from "@tanstack/react-router";
 
 const formSchema = z.object({
   descricao: z.string().min(1, {
@@ -41,7 +42,8 @@ const formSchema = z.object({
   valorTotal: z.coerce.number(),
 });
 
-export function FormItens({ mesa }: { mesa: Mesa }) {
+export function FormItens() {
+  const { mesaId } = useParams({ from: "/app/mesa/$mesaId" });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +53,10 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
       valorTotal: 0,
     },
   });
-  const pessoasDaMesa = pessoas.filter((p) => p.mesaId === mesa.id);
+
+  const [, setItens] = useAtom(itensAtom);
+  const [pessoas] = useAtom(pessoasAtom);
+  const pessoasDaMesa = pessoas.filter((p) => p.mesaId === mesaId);
   const [pagantesPorPessoa, setPagantesPorPessoa] = useState(
     pessoasDaMesa.map((pessoa) => ({
       pessoaId: pessoa.id,
@@ -59,6 +64,18 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
       total: 0,
     }))
   );
+
+  useEffect(() => {
+    setPagantesPorPessoa(
+      pessoas
+        .filter((p) => p.mesaId === mesaId)
+        .map((pessoa) => ({
+          pessoaId: pessoa.id,
+          quantidade: 0,
+          total: 0,
+        }))
+    );
+  }, [pessoas, mesaId]);
 
   const quantidade = form.watch("quantidade");
   const valorUnitario = form.watch("valorUnitario");
@@ -74,19 +91,17 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
   const valorRestante = +(valorTotal - valorUsado).toFixed(2);
 
   function adicionarItem(values: z.infer<typeof formSchema>) {
-    console.log(values);
     const valorTotal = quantidade * valorUnitario;
     const novoItem = {
       id: uuid(),
-      mesaId: mesa.id,
+      mesaId: mesaId,
       descricao: values.descricao,
       quantidade,
       valorUnitario,
       valorTotal,
       pagantes: pagantesPorPessoa.filter((p) => p.quantidade > 0),
     };
-    console.log(novoItem);
-    itens.push(novoItem);
+    setItens((prev) => [...prev, novoItem]);
   }
 
   return (
@@ -225,21 +240,23 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
                 const valorUnitario = quantidade ? valorTotal / quantidade : 0;
 
                 return (
-                  <div key={p.pessoaId} className="flex items-center gap-2">
-                    <span className="w-32">{pessoa?.nome}</span>
+                  <div
+                    key={p.pessoaId}
+                    className="grid grid-cols-3 items-center gap-2"
+                  >
+                    <span className="">{pessoa?.nome}</span>
 
                     {/* Quantidade */}
                     <Input
-                      className="w-20"
+                      className=""
                       disabled={!quantidade}
-                      type="number"
-                      min={0}
-                      max={p.quantidade + quantidadeRestante}
                       value={p.quantidade}
                       onChange={(e) => {
-                        const novaQuantidade = parseInt(e.target.value) || 0;
+                        const raw = e.target.value.replace(/\D/g, "");
+                        const novaQuantidade = parseFloat(raw) / 100 || 0;
                         const limite = p.quantidade + quantidadeRestante;
-                        if (novaQuantidade > limite) return;
+                        if (novaQuantidade > limite || novaQuantidade < 0)
+                          return;
                         setPagantesPorPessoa((prev) =>
                           prev.map((item) =>
                             item.pessoaId === p.pessoaId
@@ -258,7 +275,7 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
 
                     {/* Valor */}
                     <Input
-                      className="w-20"
+                      className=""
                       disabled={!quantidade}
                       value={formatCurrency(p.total)}
                       onChange={(e) => {
@@ -267,7 +284,7 @@ export function FormItens({ mesa }: { mesa: Mesa }) {
                         const limite = p.total + valorRestante;
                         if (novoTotal > limite || novoTotal < 0) return;
                         const novaQuantidade = valorUnitario
-                          ? Math.round(novoTotal / valorUnitario)
+                          ? novoTotal / valorUnitario
                           : 0;
 
                         setPagantesPorPessoa((prev) =>

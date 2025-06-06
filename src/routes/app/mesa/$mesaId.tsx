@@ -251,14 +251,14 @@
 // }
 
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { v4 as uuid } from "uuid";
-import { itens, mesas, pessoas } from "@/db";
-import type { Mesa } from "@/type";
-import { useState } from "react";
+import { itensAtom, mesasAtom } from "@/db";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ArrowLeftToLineIcon } from "lucide-react";
-import { FormItens } from "@/components/mesa/formItens";
+import { useAtom } from "jotai";
+import type { Mesa } from "@/type";
+import { DataTable } from "@/components/mesa/data-table";
+import { columns } from "@/components/mesa/columns";
+import { ListaPessoasMesa } from "@/components/mesa/columnPessoas";
 
 export const Route = createFileRoute("/app/mesa/$mesaId")({
   component: RouteComponent,
@@ -266,29 +266,19 @@ export const Route = createFileRoute("/app/mesa/$mesaId")({
 
 function RouteComponent() {
   const { mesaId } = Route.useParams();
+  if (!mesaId) {
+    return <div className="p-4 text-red-500">ID da mesa não informado</div>;
+  }
+  const [mesas] = useAtom(mesasAtom);
+  const [itens] = useAtom(itensAtom);
+
   const mesa = mesas.find((m) => m.id === mesaId) as Mesa;
-  const [pessoaSelecionada, setPessoaSelecionada] = useState<string | null>(
-    null
-  );
 
   if (!mesa) {
     return <div className="p-4 text-red-500">Mesa não encontrada</div>;
   }
 
-  const pessoasDaMesa = pessoas.filter((p) => p.mesaId === mesa.id);
   const itensDaMesa = itens.filter((i) => i.mesaId === mesa.id);
-
-  const [nomePessoa, setNomePessoa] = useState("");
-  function adicionarPessoa() {
-    if (!nomePessoa) return;
-    pessoas.push({
-      id: uuid(),
-      nome: nomePessoa,
-      mesaId: mesa.id,
-    });
-    setNomePessoa("");
-  }
-
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
@@ -304,87 +294,15 @@ function RouteComponent() {
       <div className="grid grid-cols-12 gap-8">
         {/* Itens */}
         <section className="col-span-9">
-          <h2 className="text-xl font-semibold mb-2">Itens</h2>
-          <ul className="mb-2">
-            {itensDaMesa.map((item) => (
-              <li key={item.id}>
-                {item.descricao} - {item.quantidade} -
-                {item.valorTotal.toFixed(2)}
-              </li>
-            ))}
-          </ul>
-          <FormItens mesa={mesa} />
-        </section>
-
-        {/* Pessoas */}
-        <section className="mb-6 grid gap-4 col-span-3">
-          <div className="w-full flex justify-between items-center">
-            <h2 className="text-xl font-semibold mb-2">Pessoas</h2>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Nome da pessoa"
-                value={nomePessoa}
-                onChange={(e) => setNomePessoa(e.target.value)}
-                className="border px-2 py-1"
-              />
-              <Button onClick={adicionarPessoa}>Adicionar</Button>
+          <div className="flex h-full flex-1 flex-col space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">Itens</h2>
             </div>
+            <DataTable columns={columns} data={itensDaMesa} />
           </div>
-          <ul className="mb-2">
-            {pessoasDaMesa.map((p) => {
-              const total = itensDaMesa.reduce((soma, item) => {
-                const pagante = item.pagantes.find(
-                  (pp) => pp.pessoaId === p.id
-                );
-                if (!pagante) return soma;
-                const valorPorPedaço = item.valorUnitario;
-                return soma + pagante.quantidade * valorPorPedaço;
-              }, 0);
-
-              return (
-                <li key={p.id} className="mb-1">
-                  <Button
-                    variant={"outline"}
-                    onClick={() =>
-                      setPessoaSelecionada(
-                        p.id === pessoaSelecionada ? null : p.id
-                      )
-                    }
-                    className="text-left w-full flex justify-between items-center"
-                  >
-                    <span>👤 {p.nome}</span>
-                    <span className="font-mono text-sm">
-                      R$ {total.toFixed(2)}
-                    </span>
-                  </Button>
-
-                  {/* Detalhamento */}
-                  {pessoaSelecionada === p.id && (
-                    <ul className="ml-4 mt-1 text-sm text-gray-700">
-                      {itensDaMesa.map((item) => {
-                        const pagante = item.pagantes.find(
-                          (pp) => pp.pessoaId === p.id
-                        );
-                        if (!pagante || pagante.quantidade === 0) return null;
-
-                        const valorPorPedaço = item.valorUnitario;
-                        const totalItem = pagante.quantidade * valorPorPedaço;
-
-                        return (
-                          <li key={item.id}>
-                            🍽️ {item.descricao}: {pagante.quantidade}{" "}
-                            {valorPorPedaço.toFixed(2)} ={" "}
-                            <strong>R$ {totalItem.toFixed(2)}</strong>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
         </section>
+
+        <ListaPessoasMesa />
       </div>
     </div>
   );
