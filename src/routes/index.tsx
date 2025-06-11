@@ -62,14 +62,13 @@ function Index() {
               ))}
             </div>
             <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-2">
-              <Link to="/auth/signin">
-                <Button variant={"outline"} size={"sm"}>
-                  Entrar
-                </Button>
-              </Link>
-              <Button variant={"default"} size={"sm"}>
-                Inscrever-se
+              <Button variant={"default"} size={"sm"} asChild>
+                <Link to="/auth/signin">Entrar</Link>
               </Button>
+
+              {/* <Button variant={"default"} size={"sm"}>
+                Inscrever-se
+              </Button> */}
             </div>
           </nav>
         </header>
@@ -82,11 +81,13 @@ function Index() {
             pessoa deve pagar, de forma simples e rápida.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button type="button" className="cursor-pointer">
-              Experimente grátis
+            <Button type="button">
+              <Link to="/auth/signin">Experimente agora</Link>
             </Button>
-            <Button variant={"outline"}>
-              Saiba mais <ArrowDownIcon />
+            <Button variant={"outline"} asChild>
+              <a href="#infos">
+                Saiba mais <ArrowDownIcon />
+              </a>
             </Button>
           </div>
         </div>
@@ -94,7 +95,10 @@ function Index() {
 
       <div className="">
         {/* Seção 1 */}
-        <section className="py-24 sm:py-32 sm:px-6 lg:px-8 grid gap-12 md:grid-cols-2 max-w-7xl mx-auto items-center">
+        <section
+          id="infos"
+          className="py-24 sm:py-32 sm:px-6 lg:px-8 grid gap-12 md:grid-cols-2 max-w-7xl mx-auto items-center"
+        >
           <div>
             <h2 className="text-3xl font-semibold mb-4">Divisão inteligente</h2>
             <p className="text-muted-foreground tracking-normal mb-6">

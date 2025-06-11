@@ -265,12 +265,12 @@ export const Route = createFileRoute("/app/mesa/$mesaId")({
 });
 
 function RouteComponent() {
+  const [mesas] = useAtom(mesasAtom);
+  const [itens] = useAtom(itensAtom);
   const { mesaId } = Route.useParams();
   if (!mesaId) {
     return <div className="p-4 text-red-500">ID da mesa não informado</div>;
   }
-  const [mesas] = useAtom(mesasAtom);
-  const [itens] = useAtom(itensAtom);
 
   const mesa = mesas.find((m) => m.id === mesaId) as Mesa;
 
@@ -301,8 +301,9 @@ function RouteComponent() {
             <DataTable columns={columns} data={itensDaMesa} />
           </div>
         </section>
-
-        <ListaPessoasMesa />
+        <section className="col-span-3">
+          <ListaPessoasMesa />
+        </section>
       </div>
     </div>
   );

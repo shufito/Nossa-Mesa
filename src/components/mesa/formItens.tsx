@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 
 import { v4 as uuid } from "uuid";
 import { useParams } from "@tanstack/react-router";
+import { SeletorPagantes } from "@/components/mesa/seletorPagantes";
 
 const formSchema = z.object({
   descricao: z.string().min(1, {
@@ -53,6 +54,9 @@ export function FormItens() {
       valorTotal: 0,
     },
   });
+  const [pessoaSelecionadasIds, setPessoaSelecionadasIds] = useState<string[]>(
+    []
+  );
 
   const [, setItens] = useAtom(itensAtom);
   const [pessoas] = useAtom(pessoasAtom);
@@ -66,16 +70,20 @@ export function FormItens() {
   );
 
   useEffect(() => {
-    setPagantesPorPessoa(
-      pessoas
-        .filter((p) => p.mesaId === mesaId)
-        .map((pessoa) => ({
-          pessoaId: pessoa.id,
-          quantidade: 0,
-          total: 0,
-        }))
-    );
-  }, [pessoas, mesaId]);
+    const pagantes = pessoaSelecionadasIds
+      .map((id) => {
+        const pessoa = pessoas.find((p) => p.id === id);
+        return pessoa
+          ? {
+              pessoaId: pessoa.id,
+              quantidade: 0,
+              total: 0,
+            }
+          : null;
+      })
+      .filter(Boolean) as typeof pagantesPorPessoa;
+    setPagantesPorPessoa(pagantes);
+  }, [pessoaSelecionadasIds, pessoas]);
 
   const quantidade = form.watch("quantidade");
   const valorUnitario = form.watch("valorUnitario");
@@ -102,6 +110,8 @@ export function FormItens() {
       pagantes: pagantesPorPessoa.filter((p) => p.quantidade > 0),
     };
     setItens((prev) => [...prev, novoItem]);
+    form.reset();
+    setPessoaSelecionadasIds([]);
   }
 
   return (
@@ -235,6 +245,11 @@ export function FormItens() {
             </div>
             <div className="grid gap-4">
               <FormLabel>Divisão entre pessoas</FormLabel>
+              <SeletorPagantes
+                pessoas={pessoasDaMesa}
+                selecionados={pessoaSelecionadasIds}
+                setSelecionados={setPessoaSelecionadasIds}
+              />
               {pagantesPorPessoa.map((p) => {
                 const pessoa = pessoas.find((pes) => pes.id === p.pessoaId);
                 const valorUnitario = quantidade ? valorTotal / quantidade : 0;
