@@ -3,19 +3,49 @@
 import { formatCurrency } from "@/lib/utils";
 import type { Item } from "@/type";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DataTableColumnHeader } from "../ui/dt-col-header";
 
-export const columns: ColumnDef<Item>[] = [
+export const columnsItens: ColumnDef<Item>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "descricao",
-    header: "Descrição",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Descrição" />;
+    },
   },
   {
     accessorKey: "quantidade",
-    header: "Quantidade",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Quantidade" />;
+    },
   },
   {
     accessorKey: "valorUnitario",
-    header: "Valor Unitário",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Valor Unitário" />;
+    },
     cell: ({ cell }) => {
       const raw = cell.getValue() as string;
       return formatCurrency(raw);
@@ -23,7 +53,9 @@ export const columns: ColumnDef<Item>[] = [
   },
   {
     accessorKey: "valorTotal",
-    header: "Valor Total",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Valor Total" />;
+    },
     cell: ({ cell }) => {
       const raw = cell.getValue() as string;
       return formatCurrency(raw);

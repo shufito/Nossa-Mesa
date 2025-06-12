@@ -1,8 +1,4 @@
-"use client";
-
-import * as React from "react";
 import type {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -27,34 +23,32 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { FormItens } from "./formItens";
+import { FormItens } from "@/components/mesa/formItens";
+import type { Item } from "@/type";
+import { columnsItens } from "@/components/mesa/columns";
+import { Button } from "@/components/ui/button";
+import { TrashIcon } from "lucide-react";
+import { useState } from "react";
+import { useAtom } from "jotai";
+import { itensAtom } from "@/db";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+export function DataTable({ data: initialData }: { data: Item[] }) {
+  const data = initialData;
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columnsItens,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
       columnFilters,
     },
+    getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -68,6 +62,13 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const [, setItens] = useAtom(itensAtom);
+  function removerItem() {
+    const selectedRows = table.getSelectedRowModel().rows;
+    setItens((prev) =>
+      prev.filter((item) => !selectedRows.some((row) => row.id === item.id))
+    );
+  }
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -84,6 +85,14 @@ export function DataTable<TData, TValue>({
           />
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant={"secondary"}
+            size={"sm"}
+            disabled={table.getSelectedRowModel().rows.length == 0}
+            onClick={removerItem}
+          >
+            <TrashIcon />
+          </Button>
           <FormItens />
         </div>
       </div>
@@ -127,7 +136,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columnsItens.length}
                   className="h-24 text-center"
                 >
                   Sem resultados.

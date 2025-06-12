@@ -63,12 +63,8 @@ function Index() {
             </div>
             <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-2">
               <Button variant={"default"} size={"sm"} asChild>
-                <Link to="/auth/signin">Entrar</Link>
+                <Link to="/app/home">Entrar</Link>
               </Button>
-
-              {/* <Button variant={"default"} size={"sm"}>
-                Inscrever-se
-              </Button> */}
             </div>
           </nav>
         </header>
@@ -82,7 +78,7 @@ function Index() {
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Button type="button">
-              <Link to="/auth/signin">Experimente agora</Link>
+              <Link to="/app/home">Experimente agora</Link>
             </Button>
             <Button variant={"outline"} asChild>
               <a href="#infos">
@@ -156,6 +152,7 @@ function Index() {
           </div>
         </section>
 
+        {/* Seção 2 */}
         <section className="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="bg-[url(src/assets/light-patten.svg)] relative isolate overflow-hidden bg-muted px-6 py-16 shadow-2xl sm:rounded-3xl sm:px-16 lg:flex lg:gap-x-20 lg:px-24 lg:py-0">
             <svg
@@ -188,9 +185,14 @@ function Index() {
                 intuitiva.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-                <Button variant={"default"}>Começar agora</Button>
-                <Button variant={"ghost"}>
-                  Saiba mais <ArrowRightIcon />
+                <Button variant={"default"}>
+                  <Link to="/app/home">Começar agora</Link>
+                </Button>
+                <Button variant={"ghost"} asChild>
+                  <a href="#info2">
+                    Saiba mais
+                    <ArrowRightIcon />
+                  </a>
                 </Button>
               </div>
             </div>
@@ -207,7 +209,7 @@ function Index() {
         </section>
 
         {/* Seção 3 */}
-        <section className="py-24 sm:py-32">
+        <section className="py-24 sm:py-32" id="info2">
           <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
             <h2 className="text-center text-base font-semibold text-primary">
               Solução na sua mão
@@ -315,39 +317,6 @@ function Index() {
           </div>
         </section>
       </div>
-
-      {/* Pricing Section */}
-      <section
-        id={"precos"}
-        className="py-16 px-4 text-center bg-muted bg-[url(src/assets/light-patten.svg)]"
-      >
-        <h2 className="text-4xl font-bold mb-8">Planos</h2>
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white shadow rounded p-6">
-            <h3 className="text-2xl font-semibold mb-2">Gratuito</h3>
-            <p className="mb-4">Ideal para encontros casuais</p>
-            <ul className="text-left mb-6 space-y-2">
-              <li>- Até 5 pessoas por divisão</li>
-              <li>- Número ilimitado de itens</li>
-              <li>- Visualização dos totais</li>
-            </ul>
-            <Button className="w-full">Usar grátis</Button>
-          </div>
-
-          <div className="bg-white shadow rounded p-6 border-2 border-blue-600">
-            <h3 className="text-2xl font-semibold mb-2">Pro - R$9,90/mês</h3>
-            <p className="mb-4">Perfeito para grupos e eventos frequentes</p>
-            <ul className="text-left mb-6 space-y-2">
-              <li>- Pessoas ilimitadas</li>
-              <li>- Salve e compartilhe divisões</li>
-              <li>- Suporte prioritário</li>
-            </ul>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
-              Assinar Pro
-            </Button>
-          </div>
-        </div>
-      </section>
 
       <footer>
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">

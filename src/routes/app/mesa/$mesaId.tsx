@@ -257,7 +257,6 @@ import { ArrowLeftToLineIcon } from "lucide-react";
 import { useAtom } from "jotai";
 import type { Mesa } from "@/type";
 import { DataTable } from "@/components/mesa/data-table";
-import { columns } from "@/components/mesa/columns";
 import { ListaPessoasMesa } from "@/components/mesa/columnPessoas";
 
 export const Route = createFileRoute("/app/mesa/$mesaId")({
@@ -298,7 +297,7 @@ function RouteComponent() {
             <div>
               <h2 className="text-2xl font-bold tracking-tight">Itens</h2>
             </div>
-            <DataTable columns={columns} data={itensDaMesa} />
+            <DataTable data={itensDaMesa} />
           </div>
         </section>
         <section className="col-span-3">
