@@ -117,7 +117,7 @@ export function FormItens() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button type="button" size={"sm"}>
+        <Button type="button" size={"sm"} disabled={pessoasDaMesa.length == 0}>
           <PlusCircle /> Adicionar item
         </Button>
       </DialogTrigger>

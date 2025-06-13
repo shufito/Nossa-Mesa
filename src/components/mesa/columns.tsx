@@ -4,7 +4,9 @@ import { formatCurrency } from "@/lib/utils";
 import type { Item } from "@/type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "../ui/dt-col-header";
+import { DataTableColumnHeader } from "@/components/ui/dt-col-header";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRightFromSquareIcon } from "lucide-react";
 
 export const columnsItens: ColumnDef<Item>[] = [
   {
@@ -33,6 +35,14 @@ export const columnsItens: ColumnDef<Item>[] = [
     accessorKey: "descricao",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Descrição" />;
+    },
+    cell: ({ cell }) => {
+      const raw = cell.getValue() as string;
+      return (
+        <Button variant={"linkblack"} size={"sm"}>
+          {raw} <ArrowUpRightFromSquareIcon />
+        </Button>
+      );
     },
   },
   {

@@ -72,17 +72,17 @@ export function ListaPessoasMesa() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(adicionarPessoa)}
-            className="flex gap-2 justify-between"
+            className="flex gap-2 "
           >
             <FormField
               control={form.control}
               name="nome"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormControl>
                     <Input
                       placeholder="Nome da pessoa"
-                      className="h-8 w-[250px]"
+                      className="h-8"
                       {...field}
                     />
                   </FormControl>
